@@ -62,7 +62,7 @@ class Property extends BaseProperty {
     }
 
     name() {
-      return this.mongoosePath.path
+      return this.mongoosePath.alias || this.mongoosePath.path
     }
 
     isEditable() {
