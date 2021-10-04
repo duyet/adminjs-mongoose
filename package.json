@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SoftwareBrothers/adminjs-mongoose.git"
+    "url": "git+https://github.com/duyet/adminjs-mongoose.git"
   },
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SoftwareBrothers/adminjs-mongoose/issues"
+    "url": "https://github.com/duyet/adminjs-mongoose/issues"
   },
-  "homepage": "https://github.com/SoftwareBrothers/adminjs-mongoose#readme",
+  "homepage": "https://github.com/duyet/adminjs-mongoose#readme",
   "peerDependencies": {
     "adminjs": "^5.0.0",
     "mongoose": ">=5"
