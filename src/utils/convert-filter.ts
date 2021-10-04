@@ -1,5 +1,6 @@
 import escape from 'escape-regexp'
 import mongoose from 'mongoose'
+import { flat } from 'adminjs'
 
 /**
  * Changes AdminJS's {@link Filter} to an object acceptible by a mongoose query.
@@ -11,8 +12,20 @@ export const convertFilter = (filter) => {
   if (!filter) {
     return {}
   }
+
   return filter.reduce((memo, filterProperty) => {
-    const { property, value } = filterProperty
+    const { path, property, value } = filterProperty
+
+    // Nested filter, e.g. 'a.b': { path: 'a.b', property: null, value: 'abc' }
+    if (!property && path) {
+      const nestedFilter = { [path]: escape(value) }
+
+      return {
+        ...flat.unflatten(nestedFilter),
+        ...memo
+      }
+    }
+
     switch (property.type()) {
     case 'string':
       return {
