@@ -30,15 +30,17 @@ export const convertFilter = (filter) => {
     case 'string':
       if (property.name().endsWith('_starts_with')) {
         return {
-          [property.name().replace('_starts_with', '')]: { $regex: '^' + escape(value), $options: 'i' },
+          [property.name().replace('_starts_with', '')]: { $regex: `^${escape(value)}`, $options: 'i' },
           ...memo,
         }
-      } else if (property.name().endsWith('_ends_with')) {
+      }
+      if (property.name().endsWith('_ends_with')) {
         return {
-          [property.name().replace('_ends_with', '')]: { $regex: escape(value) + '$', $options: 'i' },
+          [property.name().replace('_ends_with', '')]: { $regex: `${escape(value)}$`, $options: 'i' },
           ...memo,
         }
-      } else if (property.name().endsWith('_equals')) {
+      }
+      if (property.name().endsWith('_equals')) {
         return {
           [property.name().replace('_equals', '')]: escape(value),
           ...memo,
