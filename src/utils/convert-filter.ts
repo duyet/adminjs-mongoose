@@ -28,6 +28,24 @@ export const convertFilter = (filter) => {
 
     switch (property.type()) {
     case 'string':
+      if (property.name().endsWith('_starts_with')) {
+        return {
+          [property.name().replace('_starts_with', '')]: { $regex: `^${escape(value)}`, $options: 'i' },
+          ...memo,
+        }
+      }
+      if (property.name().endsWith('_ends_with')) {
+        return {
+          [property.name().replace('_ends_with', '')]: { $regex: `${escape(value)}$`, $options: 'i' },
+          ...memo,
+        }
+      }
+      if (property.name().endsWith('_equals')) {
+        return {
+          [property.name().replace('_equals', '')]: escape(value),
+          ...memo,
+        }
+      }
       return {
         [property.name()]: { $regex: escape(value), $options: 'i' },
         ...memo,
