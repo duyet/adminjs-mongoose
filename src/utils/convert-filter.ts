@@ -13,6 +13,22 @@ export const convertFilter = (filter) => {
     return {}
   }
 
+  const filterValue = (value: any) => {
+    if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
+      if ('starts_with' in value) {
+        return ({ $regex: `^${escape(value.starts_with)}`, $options: 'i' })
+      }
+      if ('ends_with' in value) {
+        return ({ $regex: `${escape(value.ends_with)}$`, $options: 'i' })
+      }
+      if ('contains' in value) {
+        return ({ $regex: `${escape(value.contains)}`, $options: 'i' })
+      }
+    }
+
+    return ({ $regex: `${escape(value)}`, $options: 'i' })
+  }
+
   return filter.reduce((memo, filterProperty) => {
     const { path, property, value } = filterProperty
 
@@ -28,26 +44,8 @@ export const convertFilter = (filter) => {
 
     switch (property.type()) {
     case 'string':
-      if (property.name().endsWith('_starts_with')) {
-        return {
-          [property.name().replace('_starts_with', '')]: { $regex: `^${escape(value)}`, $options: 'i' },
-          ...memo,
-        }
-      }
-      if (property.name().endsWith('_ends_with')) {
-        return {
-          [property.name().replace('_ends_with', '')]: { $regex: `${escape(value)}$`, $options: 'i' },
-          ...memo,
-        }
-      }
-      if (property.name().endsWith('_equals')) {
-        return {
-          [property.name().replace('_equals', '')]: escape(value),
-          ...memo,
-        }
-      }
       return {
-        [property.name()]: { $regex: escape(value), $options: 'i' },
+        [property.name()]: filterValue(value),
         ...memo,
       }
     case 'date':
