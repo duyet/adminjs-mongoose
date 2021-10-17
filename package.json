@@ -1,6 +1,6 @@
 {
   "name": "@duyet/adminjs-mongoose",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Mongoose adapter for adminjs",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
