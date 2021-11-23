@@ -123,6 +123,10 @@ class Resource extends BaseResource {
     async update(id, params) {
       const parsedParams = this.parseParams(params)
       const unflattedParams = flat.unflatten(parsedParams)
+
+      // translate alias to real field name for mongoose
+      this.MongooseModel.translateAliases(unflattedParams)
+
       try {
         const mongooseObject = await this.MongooseModel.findOneAndUpdate({
           _id: id,
